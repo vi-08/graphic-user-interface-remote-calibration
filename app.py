@@ -644,8 +644,7 @@ from flask import send_from_directory
 def index():
     here = Path(__file__).parent
     html_candidates = [
-        'NMC_Remote_Calibration_System.html',
-        'graphic user interface.html',
+        'gui.html',
     ]
     for name in html_candidates:
         f = here / name
