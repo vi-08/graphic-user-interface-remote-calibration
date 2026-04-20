@@ -7,8 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --navy: #1a3a6b;
@@ -36,249 +34,104 @@
   --r: 8px;
   --sidebar: 360px;
 }
-body {
-  font-family: 'Nunito', sans-serif;
-  background: #dfe6ed;
-  color: var(--text);
-  height: 100vh;
-  overflow: hidden;
-  font-size: 15px;
-}
+body { font-family: 'Nunito', sans-serif; background: #dfe6ed; color: var(--text); height: 100vh; overflow: hidden; font-size: 15px; }
 .app { display: flex; height: 100vh; }
-.sidebar {
-  width: var(--sidebar); min-width: var(--sidebar);
-  background: var(--navy);
-  display: flex; flex-direction: column;
-  overflow-y: auto; overflow-x: hidden;
-  box-shadow: 4px 0 16px rgba(0,0,0,0.18);
-}
+.sidebar { width: var(--sidebar); min-width: var(--sidebar); background: var(--navy); display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; box-shadow: 4px 0 16px rgba(0,0,0,0.18); }
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-
-.logo-area {
-  background: linear-gradient(160deg, #0d2550 0%, #1a3a6b 100%);
-  padding: 20px 20px 16px;
-  border-bottom: 3px solid #3a6bbf;
-}
-.logo-title {
-  font-size: 17px; font-weight: 800; color: #fff;
-  letter-spacing: 0.01em; line-height: 1.2;
-}
+.logo-area { background: linear-gradient(160deg, #0d2550 0%, #1a3a6b 100%); padding: 20px 20px 16px; border-bottom: 3px solid #3a6bbf; }
+.logo-title { font-size: 17px; font-weight: 800; color: #fff; letter-spacing: 0.01em; line-height: 1.2; }
 .logo-title span { color: #64b5f6; }
 .logo-sub { font-size: 11px; color: #90caf9; margin-top: 4px; letter-spacing: 0.04em; }
-.logo-nmc { font-size: 10px; color: #bbdefb; margin-top: 6px; font-weight: 600;
-  background: rgba(255,255,255,0.1); display: inline-block; padding: 2px 8px; border-radius: 4px; }
-
+.logo-nmc { font-size: 10px; color: #bbdefb; margin-top: 6px; font-weight: 600; background: rgba(255,255,255,0.1); display: inline-block; padding: 2px 8px; border-radius: 4px; }
 .sb-block { padding: 14px 16px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-.sb-heading {
-  font-size: 10px; font-weight: 700; color: #90caf9;
-  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 10px;
-}
-
-.upload-zone {
-  background: rgba(255,255,255,0.06);
-  border: 2px dashed rgba(100,181,246,0.5);
-  border-radius: var(--r); padding: 12px 10px; text-align: center;
-  cursor: pointer; position: relative; transition: all 0.2s; margin-bottom: 8px;
-}
+.sb-heading { font-size: 10px; font-weight: 700; color: #90caf9; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 10px; }
+.upload-zone { background: rgba(255,255,255,0.06); border: 2px dashed rgba(100,181,246,0.5); border-radius: var(--r); padding: 12px 10px; text-align: center; cursor: pointer; position: relative; transition: all 0.2s; margin-bottom: 8px; }
 .upload-zone:hover { border-color: #64b5f6; background: rgba(255,255,255,0.1); }
 .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
 .uz-icon { font-size: 22px; color: #64b5f6; }
 .uz-title { font-size: 12px; color: #e3f2fd; font-weight: 600; margin-top: 2px; }
 .uz-sub { font-size: 10px; color: #90caf9; margin-top: 2px; line-height: 1.5; }
-
-.file-tag {
-  display: flex; align-items: center; gap: 6px;
-  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 5px; padding: 5px 8px; margin-bottom: 3px;
-}
+.file-tag { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 5px; padding: 5px 8px; margin-bottom: 3px; }
 .ftag-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .dot-nmc { background: #64b5f6; }
 .dot-cust { background: #a5d6a7; }
 .ftag-name { flex: 1; font-size: 10px; color: #e3f2fd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ftag-rm { font-size: 14px; color: #90caf9; cursor: pointer; padding: 0 2px; line-height: 1; }
 .ftag-rm:hover { color: #ef9a9a; }
-
 .mode-grp { display: flex; gap: 6px; margin-bottom: 8px; }
-.mode-btn {
-  flex: 1; padding: 8px 4px; font-size: 11px; font-family: 'Nunito', sans-serif;
-  font-weight: 700; border: 2px solid rgba(100,181,246,0.4);
-  background: rgba(255,255,255,0.06); color: #90caf9;
-  border-radius: 6px; cursor: pointer; transition: all 0.18s; text-align: center;
-}
+.mode-btn { flex: 1; padding: 8px 4px; font-size: 11px; font-family: 'Nunito', sans-serif; font-weight: 700; border: 2px solid rgba(100,181,246,0.4); background: rgba(255,255,255,0.06); color: #90caf9; border-radius: 6px; cursor: pointer; transition: all 0.18s; text-align: center; }
 .mode-btn.active { background: #1565c0; border-color: #64b5f6; color: #fff; }
 .mode-desc { font-size: 10px; color: #90caf9; line-height: 1.6; margin-top: 4px; }
-
 .cb-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; cursor: pointer; }
 .cb-row input[type=checkbox] { width: 16px; height: 16px; cursor: pointer; accent-color: #64b5f6; flex-shrink: 0; }
 .cb-label { font-size: 12px; color: #e3f2fd; cursor: pointer; flex: 1; font-weight: 600; }
-.cb-badge {
-  font-size: 9px; padding: 2px 6px; border-radius: 3px; font-weight: 700;
-  letter-spacing: 0.04em;
-}
+.cb-badge { font-size: 9px; padding: 2px 6px; border-radius: 3px; font-weight: 700; letter-spacing: 0.04em; }
 .bg-G { background: #1565c0; color: #bbdefb; }
 .bg-E { background: #1b5e20; color: #c8e6c9; }
 .bg-R { background: #e65100; color: #ffe0b2; }
 .bg-C { background: #6a1b9a; color: #e1bee7; }
-
-.elev-info {
-  background: rgba(255,255,255,0.07); border-radius: 5px;
-  padding: 7px 10px; font-size: 11px; color: #90caf9;
-  display: flex; align-items: center; gap: 6px;
-}
+.elev-info { background: rgba(255,255,255,0.07); border-radius: 5px; padding: 7px 10px; font-size: 11px; color: #90caf9; display: flex; align-items: center; gap: 6px; }
 .elev-val { font-weight: 700; color: #64b5f6; font-size: 13px; }
-
-.run-btn {
-  display: block; width: calc(100% - 32px); margin: 14px 16px;
-  padding: 14px; background: linear-gradient(135deg, #f57c00, #e65100);
-  border: none; border-radius: var(--r); color: #fff;
-  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800;
-  cursor: pointer; letter-spacing: 0.02em;
-  box-shadow: 0 4px 12px rgba(230,81,0,0.40);
-  transition: all 0.2s;
-}
+.run-btn { display: block; width: calc(100% - 32px); margin: 14px 16px; padding: 14px; background: linear-gradient(135deg, #f57c00, #e65100); border: none; border-radius: var(--r); color: #fff; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; cursor: pointer; letter-spacing: 0.02em; box-shadow: 0 4px 12px rgba(230,81,0,0.40); transition: all 0.2s; }
 .run-btn:hover { background: linear-gradient(135deg, #ff9800, #f57c00); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(230,81,0,0.45); }
 .run-btn:active { transform: translateY(0); }
 .run-btn:disabled { background: #546e7a; box-shadow: none; cursor: not-allowed; transform: none; }
-
-.topbar {
-  background: var(--white); border-bottom: 2px solid var(--border);
-  padding: 12px 24px; display: flex; align-items: center;
-  justify-content: space-between; box-shadow: var(--shadow);
-}
+.topbar { background: var(--white); border-bottom: 2px solid var(--border); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow); }
 .tb-title { font-size: 16px; font-weight: 800; color: var(--navy); }
 .tb-meta { font-size: 11px; color: var(--textsub); margin-top: 2px; }
 .tb-btns { display: flex; gap: 8px; }
-.act-btn {
-  padding: 8px 16px; font-size: 12px; font-family: 'Nunito', sans-serif;
-  font-weight: 700; border: 2px solid var(--navylt); border-radius: 6px;
-  background: var(--white); color: var(--navylt); cursor: pointer; transition: all 0.18s;
-}
+.act-btn { padding: 8px 16px; font-size: 12px; font-family: 'Nunito', sans-serif; font-weight: 700; border: 2px solid var(--navylt); border-radius: 6px; background: var(--white); color: var(--navylt); cursor: pointer; transition: all 0.18s; }
 .act-btn:hover { background: var(--navylt); color: #fff; }
-
 .prog-wrap { height: 4px; background: #e8edf2; }
 .prog-fill { height: 4px; background: linear-gradient(90deg, #1565c0, #00acc1); width: 0%; transition: width 0.35s; }
-
-.session-bar {
-  background: #eceff1; border-bottom: 2px solid var(--border);
-  padding: 0 24px; display: flex; align-items: center; gap: 0; overflow-x: auto;
-}
-.sess-tab {
-  display: flex; align-items: center; gap: 6px;
-  padding: 10px 18px 8px; font-size: 12px; font-weight: 700; cursor: pointer;
-  border-bottom: 3px solid transparent; color: var(--textsub);
-  white-space: nowrap; transition: all 0.15s; margin-bottom: -2px;
-  border-right: 1px solid var(--border);
-}
+.session-bar { background: #eceff1; border-bottom: 2px solid var(--border); padding: 0 24px; display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.sess-tab { display: flex; align-items: center; gap: 6px; padding: 10px 18px 8px; font-size: 12px; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; color: var(--textsub); white-space: nowrap; transition: all 0.15s; margin-bottom: -2px; border-right: 1px solid var(--border); }
 .sess-tab:first-child { border-left: 1px solid var(--border); }
 .sess-tab.active { color: var(--navylt); border-bottom-color: var(--navylt); background: var(--white); }
 .sess-tab:hover:not(.active) { color: var(--navy); background: rgba(255,255,255,0.6); }
 .sess-close { font-size: 13px; color: var(--textsub); line-height: 1; padding: 1px 3px; border-radius: 3px; }
 .sess-close:hover { background: #ffcdd2; color: var(--red); }
-.sess-new {
-  padding: 8px 14px; font-size: 20px; color: var(--navylt); cursor: pointer;
-  font-weight: 700; line-height: 1; transition: all 0.15s; margin-left: 4px;
-  border: none; background: transparent;
-}
+.sess-new { padding: 8px 14px; font-size: 20px; color: var(--navylt); cursor: pointer; font-weight: 700; line-height: 1; transition: all 0.15s; margin-left: 4px; border: none; background: transparent; }
 .sess-new:hover { color: var(--navy); }
 .sess-label { font-size: 11px; }
-
-.inner-tabbar {
-  background: var(--white); border-bottom: 1px solid var(--border);
-  padding: 0 24px; display: flex; gap: 0;
-}
-.inner-tab {
-  padding: 10px 20px 9px; font-size: 13px; font-weight: 700;
-  cursor: pointer; color: var(--textsub);
-  border-bottom: 3px solid transparent; margin-bottom: -1px;
-  transition: all 0.15s;
-}
+.inner-tabbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; }
+.inner-tab { padding: 10px 20px 9px; font-size: 13px; font-weight: 700; cursor: pointer; color: var(--textsub); border-bottom: 3px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
 .inner-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
 .inner-tab:hover:not(.active) { color: var(--navy); }
-
-/* FIX: content panes must use flex layout so they fill the remaining height correctly */
-.content {
-  display: none;
-  flex: 1;
-  flex-direction: column;
-  overflow-y: auto;
-  padding: 20px 24px;
-  background: #eef2f7;
-}
-.content.active {
-  display: flex;
-  flex-direction: column;
-}
-
-.empty-state {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  height: 380px; color: var(--textsub); gap: 12px; text-align: center;
-}
+/* Pane host — single flex slot, only one child visible at a time */
+.pane-host { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.content { display: none; flex: 1; flex-direction: column; overflow-y: auto; padding: 20px 24px; background: #eef2f7; }
+.content.active { display: flex; }
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 320px; color: var(--textsub); gap: 12px; text-align: center; }
 .empty-icon { font-size: 56px; opacity: 0.35; }
 .empty-msg { font-size: 14px; max-width: 380px; line-height: 1.7; }
-
-.time-range-bar {
-  background: var(--white); border-radius: var(--r); padding: 14px 20px;
-  box-shadow: var(--shadow); margin-bottom: 14px;
-  border-left: 5px solid var(--navylt);
-  display: flex; align-items: center; gap: 0; flex-wrap: wrap;
-}
-.trb-section-title {
-  font-size: 10px; font-weight: 700; color: var(--navylt); text-transform: uppercase;
-  letter-spacing: 0.12em; margin-right: 18px; white-space: nowrap; flex-shrink: 0;
-}
+.time-range-bar { background: var(--white); border-radius: var(--r); padding: 14px 20px; box-shadow: var(--shadow); margin-bottom: 14px; border-left: 5px solid var(--navylt); display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+.trb-section-title { font-size: 10px; font-weight: 700; color: var(--navylt); text-transform: uppercase; letter-spacing: 0.12em; margin-right: 18px; white-space: nowrap; flex-shrink: 0; }
 .trb-divider { width: 1px; background: var(--border); align-self: stretch; margin: 0 16px; flex-shrink: 0; }
 .trb-block { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .trb-label { font-size: 9px; font-weight: 700; color: var(--textsub); text-transform: uppercase; letter-spacing: 0.1em; }
 .trb-val { font-size: 14px; font-weight: 800; color: var(--text); font-family: 'Source Code Pro', monospace; white-space: nowrap; }
-.trb-sub  { font-size: 10px; color: var(--textsub); }
+.trb-sub { font-size: 10px; color: var(--textsub); }
 .trb-ctrl { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .trb-ctrl label { font-size: 10px; font-weight: 700; color: var(--textsub); white-space: nowrap; }
-.trb-input {
-  padding: 4px 8px; border: 2px solid var(--border); border-radius: 5px;
-  font-family: 'Source Code Pro', monospace; font-size: 12px; color: var(--text);
-  width: 70px; outline: none; transition: border-color 0.18s;
-}
+.trb-input { padding: 4px 8px; border: 2px solid var(--border); border-radius: 5px; font-family: 'Source Code Pro', monospace; font-size: 12px; color: var(--text); width: 70px; outline: none; transition: border-color 0.18s; }
 .trb-input:focus { border-color: var(--navylt); }
-.trb-apply {
-  padding: 4px 12px; background: var(--navylt); border: none; border-radius: 5px;
-  color: #fff; font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700;
-  cursor: pointer; transition: all 0.15s; white-space: nowrap;
-}
+.trb-apply { padding: 4px 12px; background: var(--navylt); border: none; border-radius: 5px; color: #fff; font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
 .trb-apply:hover { background: var(--navy); }
 .trb-mode-grp { display: flex; gap: 4px; }
-.trb-mode-btn {
-  padding: 4px 10px; font-size: 10px; font-family: 'Nunito', sans-serif;
-  font-weight: 700; border: 2px solid var(--border); border-radius: 5px;
-  background: var(--white); color: var(--textsub); cursor: pointer; transition: all 0.15s;
-}
+.trb-mode-btn { padding: 4px 10px; font-size: 10px; font-family: 'Nunito', sans-serif; font-weight: 700; border: 2px solid var(--border); border-radius: 5px; background: var(--white); color: var(--textsub); cursor: pointer; transition: all 0.15s; }
 .trb-mode-btn.active { background: var(--navylt); border-color: var(--navylt); color: #fff; }
-
-.panel {
-  background: var(--white); border-radius: var(--r);
-  box-shadow: var(--shadow); margin-bottom: 16px; overflow: hidden;
-}
-.panel-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 18px; border-bottom: 2px solid #eceff1;
-  background: #f8fafc;
-}
+.panel { background: var(--white); border-radius: var(--r); box-shadow: var(--shadow); margin-bottom: 16px; overflow: hidden; flex-shrink: 0; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 2px solid #eceff1; background: #f8fafc; }
 .panel-title { font-size: 14px; font-weight: 800; color: var(--navy); }
 .panel-sub { font-size: 10px; color: var(--textsub); margin-top: 2px; }
 .panel-body { padding: 16px 18px; }
-
-.eb-row { display: flex; align-items: center; gap: 8px; }
-.eb-row input { width: 16px; height: 16px; accent-color: #f57c00; cursor: pointer; }
-.eb-row label { font-size: 12px; font-weight: 700; color: var(--text); cursor: pointer; }
-
+.cb-opt-row { display: flex; align-items: center; gap: 8px; }
+.cb-opt-row input { width: 16px; height: 16px; accent-color: var(--teal); cursor: pointer; }
+.cb-opt-row label { font-size: 12px; font-weight: 700; color: var(--text); cursor: pointer; }
 .tbl-wrap { overflow-x: auto; max-height: 300px; overflow-y: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 11px; }
-th {
-  text-align: left; padding: 8px 10px;
-  font-size: 10px; font-weight: 700; color: var(--textsub);
-  text-transform: uppercase; letter-spacing: 0.08em;
-  border-bottom: 2px solid #eceff1; background: #f8fafc;
-  white-space: nowrap; position: sticky; top: 0; z-index: 1;
-}
+th { text-align: left; padding: 8px 10px; font-size: 10px; font-weight: 700; color: var(--textsub); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 2px solid #eceff1; background: #f8fafc; white-space: nowrap; position: sticky; top: 0; z-index: 1; }
 td { padding: 6px 10px; border-bottom: 1px solid #f0f4f8; color: var(--text); white-space: nowrap; font-family: 'Source Code Pro', monospace; font-size: 11px; }
 tr:nth-child(even) td { background: #fafbfc; }
 tr:hover td { background: #e8f4fd; }
@@ -286,47 +139,31 @@ tr:hover td { background: #e8f4fd; }
 .pill-ok   { background: var(--greenlt); color: var(--green); }
 .pill-warn { background: var(--amberlt); color: var(--amber); }
 .pill-bad  { background: var(--redlt);   color: var(--red);   }
-
-.mdev-cfg { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding: 14px 18px; border-bottom: 1px solid #eceff1; }
+.mdev-cfg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px 18px; border-bottom: 1px solid #eceff1; }
 .fg { display: flex; flex-direction: column; gap: 5px; }
 .fg label { font-size: 11px; font-weight: 700; color: var(--textsub); text-transform: uppercase; letter-spacing: 0.08em; }
-.fg input {
-  padding: 8px 10px; border: 2px solid var(--border); border-radius: 6px;
-  font-family: 'Source Code Pro', monospace; font-size: 13px; color: var(--text);
-  outline: none; transition: border-color 0.18s;
-}
+.fg input { padding: 8px 10px; border: 2px solid var(--border); border-radius: 6px; font-family: 'Source Code Pro', monospace; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.18s; }
 .fg input:focus { border-color: var(--navylt); }
-.mdev-run-btn {
-  margin: 12px 18px 16px;
-  padding: 11px 28px; background: var(--teal); border: none; border-radius: 6px;
-  color: #fff; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
-  cursor: pointer; transition: all 0.18s;
-}
-.mdev-run-btn:hover { background: #00838f; }
-
+.mdev-run-btn { margin: 12px 18px 16px; padding: 11px 28px; background: var(--teal); border: none; border-radius: 6px; color: #fff; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.18s; }
+.mdev-run-btn:hover:not(:disabled) { background: #00838f; }
+.mdev-run-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .mdev-summary { margin-top: 14px; }
 .mdev-summary table { width: auto; }
 .mdev-summary td, .mdev-summary th { font-family: 'Source Code Pro', monospace; }
-
-.filter-report {
-  background: var(--greenlt); border: 1px solid #a5d6a7; border-radius: 6px;
-  padding: 10px 14px; font-size: 11px; margin-bottom: 12px;
-}
+.mdev-final-box { margin-top: 20px; background: var(--purplelt); border: 1px solid #ce93d8; border-radius: var(--r); padding: 16px 20px; }
+.mdev-final-title { font-size: 13px; font-weight: 800; color: var(--purple); margin-bottom: 14px; }
+.mdev-final-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.mdev-final-card { background: #fff; border: 1px solid #e1bee7; border-radius: 6px; padding: 14px 16px; text-align: center; }
+.mfc-label { font-size: 10px; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+.mfc-tau { font-size: 11px; color: var(--textsub); margin-bottom: 6px; font-family: 'Source Code Pro', monospace; }
+.mfc-val { font-family: 'Source Code Pro', monospace; font-size: 17px; font-weight: 700; color: var(--purple); }
+.filter-report { background: var(--greenlt); border: 1px solid #a5d6a7; border-radius: 6px; padding: 10px 14px; font-size: 11px; margin-bottom: 12px; }
 .filter-report span { font-weight: 700; color: var(--green); }
-
-.notif {
-  position: fixed; top: 18px; right: 18px; z-index: 9999;
-  background: var(--white); border: 2px solid var(--navylt);
-  border-radius: var(--r); padding: 12px 18px;
-  font-size: 13px; font-weight: 700; color: var(--text);
-  box-shadow: var(--shadow2); opacity: 0; transition: all 0.28s;
-  transform: translateY(-8px); max-width: 300px;
-}
+.notif { position: fixed; top: 18px; right: 18px; z-index: 9999; background: var(--white); border: 2px solid var(--navylt); border-radius: var(--r); padding: 12px 18px; font-size: 13px; font-weight: 700; color: var(--text); box-shadow: var(--shadow2); opacity: 0; transition: all 0.28s; transform: translateY(-8px); max-width: 300px; }
 .notif.show { opacity: 1; transform: none; }
 .notif.ok   { border-color: var(--green); color: var(--green); }
 .notif.err  { border-color: var(--red);   color: var(--red);   }
 .notif.warn { border-color: #f57c00; color: #e65100; }
-
 canvas { display: block; }
 </style>
 </head>
@@ -340,18 +177,16 @@ canvas { display: block; }
     <div class="logo-sub">Metrological Time Calibration</div>
     <div class="logo-nmc">▸ National Metrology Centre, Singapore</div>
   </div>
-
   <div class="sb-block">
     <div class="sb-heading">① NMC Reference Data (Operator)</div>
     <div class="upload-zone" id="nmc-zone">
       <input type="file" id="nmc-files" multiple>
       <div class="uz-icon">📂</div>
       <div class="uz-title">Click or drag NMC files here</div>
-      <div class="uz-sub"> Please provide in CGGTTS format </div>
+      <div class="uz-sub">Please provide in CGGTTS format</div>
     </div>
     <div id="nmc-list"></div>
   </div>
-
   <div class="sb-block">
     <div class="sb-heading">② Customer Lab Data</div>
     <div class="upload-zone" id="cust-zone">
@@ -362,61 +197,33 @@ canvas { display: block; }
     </div>
     <div id="cust-list"></div>
   </div>
-
   <div class="sb-block">
     <div class="sb-heading">③ Time Transfer Mode</div>
     <div class="mode-grp">
       <button class="mode-btn active" id="btn-aiv" onclick="setMode('AIV')">All-in-View</button>
       <button class="mode-btn" id="btn-cv" onclick="setMode('CV')">Common View</button>
     </div>
-    <div class="mode-desc" id="mode-desc">
-      All satellites visible to each lab at each epoch are averaged independently.
-    </div>
+    <div class="mode-desc" id="mode-desc">All satellites visible to each lab at each epoch are averaged independently.</div>
   </div>
-
   <div class="sb-block">
     <div class="sb-heading">④ Filtering</div>
     <label class="cb-row">
       <input type="checkbox" id="sigma-on" checked>
       <span class="cb-label">Apply 2σ clipping per epoch</span>
     </label>
-    <div style="font-size:10px;color:#90caf9;padding-left:24px;line-height:1.6;margin-top:2px">
-      Removes outlier REFSYS values beyond ±2 std from the mean REFSYS at a given epoch; applied independently to both labs before averaging.
-    </div>
+    <div style="font-size:10px;color:#90caf9;padding-left:24px;line-height:1.6;margin-top:2px">Removes outlier REFSYS values beyond ±2 std from the mean REFSYS at a given epoch; applied independently to both labs before averaging.</div>
   </div>
-
   <div class="sb-block">
     <div class="sb-heading">⑤ GNSS Constellations</div>
-    <label class="cb-row">
-      <input type="checkbox" id="c-gps" checked>
-      <span class="cb-label">GPS</span>
-      <span class="cb-badge bg-G">G</span>
-    </label>
-    <label class="cb-row">
-      <input type="checkbox" id="c-gal">
-      <span class="cb-label">Galileo</span>
-      <span class="cb-badge bg-E">E</span>
-    </label>
-    <label class="cb-row">
-      <input type="checkbox" id="c-glo">
-      <span class="cb-label">GLONASS</span>
-      <span class="cb-badge bg-R">R</span>
-    </label>
-    <label class="cb-row">
-      <input type="checkbox" id="c-bds">
-      <span class="cb-label">BeiDou</span>
-      <span class="cb-badge bg-C">C</span>
-    </label>
+    <label class="cb-row"><input type="checkbox" id="c-gps" checked><span class="cb-label">GPS</span><span class="cb-badge bg-G">G</span></label>
+    <label class="cb-row"><input type="checkbox" id="c-gal"><span class="cb-label">Galileo</span><span class="cb-badge bg-E">E</span></label>
+    <label class="cb-row"><input type="checkbox" id="c-glo"><span class="cb-label">GLONASS</span><span class="cb-badge bg-R">R</span></label>
+    <label class="cb-row"><input type="checkbox" id="c-bds"><span class="cb-label">BeiDou</span><span class="cb-badge bg-C">C</span></label>
   </div>
-
   <div class="sb-block">
     <div class="sb-heading">⑥ Elevation Mask</div>
-    <div class="elev-info">
-      <span>Set to</span>
-      <span class="elev-val">10°</span>
-    </div>
+    <div class="elev-info"><span>Set to</span><span class="elev-val">10°</span></div>
   </div>
-
   <button class="run-btn" id="run-btn" onclick="runCalibration()">▶ Run Calibration</button>
 </div>
 
@@ -428,113 +235,130 @@ canvas { display: block; }
       <div class="tb-meta" id="tb-meta">Upload NMC reference and customer files, then press Run Calibration</div>
     </div>
     <div class="tb-btns">
-      <button class="act-btn" onclick="exportCSV()" title="Export epoch data as CSV">⬇ Export CSV</button>
-      <button class="act-btn" onclick="exportChart()" title="Export current chart as PNG image">⬇ Export Chart</button>
+      <button class="act-btn" onclick="exportCSV()">⬇ Export CSV</button>
+      <button class="act-btn" onclick="exportChart()">⬇ Export Chart</button>
     </div>
   </div>
   <div class="prog-wrap"><div class="prog-fill" id="prog"></div></div>
-
   <div class="session-bar" id="sess-bar">
     <button class="sess-new" title="New session" onclick="newSession()">+</button>
   </div>
-
   <div class="inner-tabbar">
     <div class="inner-tab active" id="it-results" onclick="switchInner('results')">Results</div>
     <div class="inner-tab" id="it-mdev" onclick="switchInner('mdev')">MDEV Analysis</div>
   </div>
 
-  <!-- ── RESULTS PANEL ── -->
-  <div class="content active" id="pane-results">
-    <div id="r-empty" class="empty-state">
-      <div class="empty-icon">🕐</div>
-      <div class="empty-msg">
-        No calibration run yet for this session.<br>
-        Upload files, configure options, and press <strong>Run Calibration</strong>.
-      </div>
-    </div>
-    <div id="r-content" style="display:none">
-      <div id="stat-row"></div>
-      <div class="panel" id="filter-panel" style="display:none">
-        <div class="panel-head"><div class="panel-title">Filtering Report</div></div>
-        <div class="panel-body">
-          <div class="filter-report" id="filter-report-nmc"></div>
-          <div class="filter-report" style="background:var(--teallt);border-color:#80cbc4;" id="filter-report-cust"></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <div class="panel-title">UTC(Lab) − UTC(NMC) Time Difference</div>
-            <div class="panel-sub" id="chart-sub"></div>
-          </div>
-          <div class="eb-row">
-            <input type="checkbox" id="errbar-on" onchange="redrawChart()">
-            <label for="errbar-on">Show ± 15 ns error bars</label>
-          </div>
-        </div>
-        <div class="panel-body">
-          <div style="position:relative;width:100%;height:320px">
-            <canvas id="mainChart"></canvas>
-          </div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-head">
-          <div class="panel-title">Epoch Summary Table</div>
-          <div style="font-size:11px;color:var(--textsub)" id="ep-count"></div>
-        </div>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr>
-              <th>MJD</th><th>Date (DD-MM-YYYY)</th><th>Epoch (HH:MM:SS)</th>
-              <th>NMC REFSYS (ns)</th><th>Lab REFSYS (ns)</th>
-              <th>Δ (ns)</th><th>Sats</th>
-            </tr></thead>
-            <tbody id="ep-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="pane-host">
 
-  <!-- ── MDEV PANEL ── -->
-  <div class="content" id="pane-mdev">
-    <div id="m-empty" class="empty-state">
-      <div class="empty-icon">📈</div>
-      <div class="empty-msg">Run calibration first, then compute MDEV for this session.</div>
+    <!-- ── RESULTS PANE ── -->
+    <div class="content active" id="pane-results">
+      <div id="r-initial" class="empty-state">
+        <div class="empty-icon">🕐</div>
+        <div class="empty-msg">No calibration run yet for this session.<br>Upload files, configure options, and press <strong>Run Calibration</strong>.</div>
+      </div>
+      <div id="r-content" style="display:none">
+        <div id="stat-row"></div>
+        <div class="panel" id="filter-panel" style="display:none">
+          <div class="panel-head"><div class="panel-title">Filtering Report</div></div>
+          <div class="panel-body">
+            <div class="filter-report" id="filter-report-nmc"></div>
+            <div class="filter-report" style="background:var(--teallt);border-color:#80cbc4;" id="filter-report-cust"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">UTC(Lab) − UTC(NMC) Time Difference</div>
+              <div class="panel-sub" id="chart-sub"></div>
+            </div>
+            <div class="cb-opt-row">
+              <input type="checkbox" id="dayavg-on" onchange="redrawChart()">
+              <label for="dayavg-on">Average per MJD (one value per day)</label>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div style="position:relative;width:100%;height:320px"><canvas id="mainChart"></canvas></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">Epoch Summary Table</div>
+            <div style="font-size:11px;color:var(--textsub)" id="ep-count"></div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr>
+                <th>MJD</th><th>Date (DD-MM-YYYY)</th><th>Epoch (HH:MM:SS)</th>
+                <th>NMC REFSYS (ns)</th><th>Lab REFSYS (ns)</th>
+                <th>Δ (ns)</th><th>Sats</th>
+              </tr></thead>
+              <tbody id="ep-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="m-content" style="display:none">
+
+    <!-- ── MDEV PANE ── -->
+    <div class="content" id="pane-mdev">
+      <!-- Config panel is ALWAYS visible in the MDEV pane -->
       <div class="panel">
         <div class="panel-head"><div class="panel-title">MDEV Configuration</div></div>
-        <div class="mdev-cfg" style="grid-template-columns: 1fr 1fr">
+        <div class="mdev-cfg">
           <div class="fg">
             <label>Epoch interval (s)</label>
             <input type="number" id="md-epoch" value="780">
           </div>
           <div class="fg">
             <label>Tau points</label>
-            <input type="text" id="md-taus" value="1000, 10000, 100000" readonly style="color:var(--textsub)">
+            <input type="text" id="md-taus" value="auto (log-spaced)" readonly style="color:var(--textsub)">
           </div>
         </div>
-        <button class="mdev-run-btn" onclick="computeMDEV()">Compute MDEV</button>
+        <button class="mdev-run-btn" id="mdev-run-btn" onclick="computeMDEV()" disabled>Compute MDEV</button>
       </div>
-      <div class="panel" id="mdev-result-panel" style="display:none">
-        <div class="panel-head">
-          <div class="panel-title">Modified Allan Deviation — UTC(Lab) − UTC(NMC)</div>
-          <div class="panel-sub" id="mdev-method"></div>
+
+      <!-- Shown until calibration is run -->
+      <div id="m-nocal" class="empty-state" style="height:180px">
+        <div class="empty-icon" style="font-size:36px">📈</div>
+        <div class="empty-msg">Run calibration first, then press <strong>Compute MDEV</strong> above.</div>
+      </div>
+
+      <!-- Shown after MDEV is computed -->
+      <div id="m-content" style="display:none">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">Modified Allan Deviation — UTC(Lab) − UTC(NMC)</div>
+            <div class="panel-sub" id="mdev-method"></div>
+          </div>
+          <div class="panel-body">
+            <div style="position:relative;width:100%;height:360px"><canvas id="mdevChart"></canvas></div>
+            <div class="mdev-summary" id="mdev-summary"></div>
+          </div>
         </div>
-        <div class="panel-body">
-          <div id="mdev-avg-row" style="display:none;margin-bottom:12px;padding:10px 14px;background:var(--purplelt);border:1px solid #ce93d8;border-radius:6px;font-size:12px;color:var(--purple)">
-            <strong>Average MDEV across τ = 10³, 10⁴, 10⁵ s:</strong> <span id="mdev-avg-val" style="font-family:'Source Code Pro',monospace;font-size:14px;font-weight:700;margin-left:8px"></span>
+        <div class="mdev-final-box">
+          <div class="mdev-final-title">📊 Average MDEV of UTC(Lab) − UTC(NMC)</div>
+          <div class="mdev-final-grid">
+            <div class="mdev-final-card">
+              <div class="mfc-label">16 min (1 interval)</div>
+              <div class="mfc-tau">τ ≈ 960 s</div>
+              <div class="mfc-val" id="mfc-val-1">—</div>
+            </div>
+            <div class="mdev-final-card">
+              <div class="mfc-label">1 Day</div>
+              <div class="mfc-tau">τ = 86 400 s</div>
+              <div class="mfc-val" id="mfc-val-2">—</div>
+            </div>
+            <div class="mdev-final-card">
+              <div class="mfc-label">10 Days</div>
+              <div class="mfc-tau">τ = 864 000 s</div>
+              <div class="mfc-val" id="mfc-val-3">—</div>
+            </div>
           </div>
-          <div style="position:relative;width:100%;height:340px">
-            <canvas id="mdevChart"></canvas>
-          </div>
-          <div class="mdev-summary" id="mdev-summary"></div>
         </div>
       </div>
     </div>
-  </div>
+
+  </div><!-- end .pane-host -->
 </div><!-- end .main -->
 </div><!-- end .app -->
 
@@ -551,16 +375,10 @@ let charts = {};
 function createSession(label) {
   const id = ++sessionCounter;
   const sess = {
-    id,
-    label: label || `Session ${id}`,
-    nmc_files: [],
-    cust_files: [],
-    result: null,
-    epochs: [],
-    summary: null,
-    filter_nmc: null,
-    filter_cust: null,
-    mdev: null,
+    id, label: label || `Session ${id}`,
+    nmc_files: [], cust_files: [],
+    result: null, epochs: [], summary: null,
+    filter_nmc: null, filter_cust: null, mdev: null,
   };
   sessions.push(sess);
   renderSessionTabs();
@@ -574,8 +392,8 @@ function activateSession(id) {
   const sess = getSession();
   renderFileList('nmc', sess.nmc_files);
   renderFileList('cust', sess.cust_files);
-  if (sess.result) showResults(sess); else showEmpty();
-  if (sess.mdev) showMdev(sess); else showMdevEmpty();
+  if (sess.result) showResults(sess); else showInitial();
+  refreshMdevPane(sess);
 }
 
 function getSession(id) { return sessions.find(s => s.id === (id || activeSession)); }
@@ -598,9 +416,7 @@ function renderSessionTabs() {
   sessions.forEach(sess => {
     const tab = document.createElement('div');
     tab.className = 'sess-tab' + (sess.id === activeSession ? ' active' : '');
-    tab.innerHTML =
-      `<span class="sess-label">${esc(sess.label)}</span>` +
-      `<span class="sess-close" onclick="closeSession(${sess.id}, event)" title="Close">✕</span>`;
+    tab.innerHTML = `<span class="sess-label">${esc(sess.label)}</span><span class="sess-close" onclick="closeSession(${sess.id}, event)" title="Close">✕</span>`;
     tab.addEventListener('click', () => activateSession(sess.id));
     bar.insertBefore(tab, newBtn);
   });
@@ -614,7 +430,6 @@ document.getElementById('nmc-files').addEventListener('change', function() {
   renderFileList('nmc', sess.nmc_files);
   this.value = '';
 });
-
 document.getElementById('cust-files').addEventListener('change', function() {
   const sess = getSession();
   [...this.files].forEach(f => { if (!sess.cust_files.find(x => x.name===f.name)) sess.cust_files.push(f); });
@@ -633,10 +448,7 @@ function renderFileList(side, files) {
   const el = document.getElementById(side+'-list'); el.innerHTML = '';
   files.forEach((f, i) => {
     const d = document.createElement('div'); d.className = 'file-tag';
-    d.innerHTML =
-      `<span class="ftag-dot dot-${side==='nmc'?'nmc':'cust'}"></span>` +
-      `<span class="ftag-name" title="${esc(f.name)}">${esc(f.name)}</span>` +
-      `<span class="ftag-rm" onclick="removeFile('${side}',${i})">✕</span>`;
+    d.innerHTML = `<span class="ftag-dot dot-${side==='nmc'?'nmc':'cust'}"></span><span class="ftag-name" title="${esc(f.name)}">${esc(f.name)}</span><span class="ftag-rm" onclick="removeFile('${side}',${i})">✕</span>`;
     el.appendChild(d);
   });
 }
@@ -654,19 +466,29 @@ function setMode(m) {
 let innerTab = 'results';
 function switchInner(t) {
   innerTab = t;
-  const rPane = document.getElementById('pane-results');
-  const mPane = document.getElementById('pane-mdev');
-  rPane.classList.toggle('active', t === 'results');
-  mPane.classList.toggle('active', t === 'mdev');
-  document.getElementById('it-results').classList.toggle('active', t==='results');
-  document.getElementById('it-mdev').classList.toggle('active', t==='mdev');
+  document.getElementById('pane-results').classList.toggle('active', t === 'results');
+  document.getElementById('pane-mdev').classList.toggle('active', t === 'mdev');
+  document.getElementById('it-results').classList.toggle('active', t === 'results');
+  document.getElementById('it-mdev').classList.toggle('active', t === 'mdev');
+}
+
+// Refresh the entire MDEV pane state from the session object
+function refreshMdevPane(sess) {
+  const hasCalib = !!(sess && sess.result && sess.epochs.length);
+  const btn = document.getElementById('mdev-run-btn');
+  btn.disabled = !hasCalib;
+  document.getElementById('m-nocal').style.display = hasCalib ? 'none' : 'flex';
+  if (sess && sess.mdev) {
+    document.getElementById('m-content').style.display = 'block';
+    renderMdevResults(sess.mdev);
+  } else {
+    document.getElementById('m-content').style.display = 'none';
+  }
 }
 
 async function runCalibration() {
   const sess = getSession();
-  if (!sess.nmc_files.length || !sess.cust_files.length) {
-    toast('Upload both NMC reference and customer files first.', 'err'); return;
-  }
+  if (!sess.nmc_files.length || !sess.cust_files.length) { toast('Upload both NMC reference and customer files first.', 'err'); return; }
   const consts = getConsts();
   if (!consts.length) { toast('Select at least one constellation.', 'warn'); return; }
 
@@ -677,9 +499,9 @@ async function runCalibration() {
   const fd = new FormData();
   sess.nmc_files.forEach(f  => fd.append('nmc_files[]',  f));
   sess.cust_files.forEach(f => fd.append('cust_files[]', f));
-  fd.append('mode',         currentMode);
+  fd.append('mode', currentMode);
   fd.append('sigma_filter', document.getElementById('sigma-on').checked ? 'true' : 'false');
-  fd.append('sigma',        '2.0');
+  fd.append('sigma', '2.0');
   fd.append('constellations', JSON.stringify(consts));
 
   setProg(30);
@@ -691,9 +513,8 @@ async function runCalibration() {
       toast(data.error || 'Server error', 'err');
       setProg(0); btn.disabled=false; btn.textContent='▶ Run Calibration'; return;
     }
-
-    sess.epochs     = data.epochs;
-    sess.summary    = data.summary;
+    sess.epochs      = data.epochs;
+    sess.summary     = data.summary;
     sess.filter_nmc  = data.filter_report_nmc;
     sess.filter_cust = data.filter_report_cust;
     sess.result = true;
@@ -705,13 +526,11 @@ async function runCalibration() {
       : `${s.date_start} → ${s.date_end} · ${consts.join('+')}`;
     renderSessionTabs();
 
-    document.getElementById('tb-title').textContent =
-      `NMC Remote Calibration System — UTC(Lab) − UTC(NMC) · ${currentMode}`;
-    document.getElementById('tb-meta').textContent =
-      `MJD ${s.mjd_start}–${s.mjd_end} · ${s.date_start} to ${s.date_end} · ${consts.join('+')} · ${s.n_epochs} epochs`;
+    document.getElementById('tb-title').textContent = `NMC Remote Calibration System — UTC(Lab) − UTC(NMC) · ${currentMode}`;
+    document.getElementById('tb-meta').textContent  = `MJD ${s.mjd_start}–${s.mjd_end} · ${s.date_start} to ${s.date_end} · ${consts.join('+')} · ${s.n_epochs} epochs`;
 
     showResults(sess);
-    showMdevEmpty();
+    refreshMdevPane(sess);
     setProg(100);
     setTimeout(() => setProg(0), 700);
     toast(`Calibration complete — ${s.n_epochs} epochs matched`, 'ok');
@@ -727,17 +546,13 @@ function getConsts() {
   return Object.keys(map).filter(k => document.getElementById(map[k]).checked);
 }
 
-function showEmpty() {
-  document.getElementById('r-empty').style.display = 'flex';
+function showInitial() {
+  document.getElementById('r-initial').style.display = 'flex';
   document.getElementById('r-content').style.display = 'none';
-}
-function showMdevEmpty() {
-  document.getElementById('m-empty').style.display = 'flex';
-  document.getElementById('m-content').style.display = 'none';
 }
 
 function showResults(sess) {
-  document.getElementById('r-empty').style.display = 'none';
+  document.getElementById('r-initial').style.display = 'none';
   document.getElementById('r-content').style.display = 'block';
   const s = sess.summary;
   mjdFrom = null; mjdTo = null;
@@ -784,18 +599,14 @@ function showResults(sess) {
     document.getElementById('filter-panel').style.display = 'block';
     const fn = sess.filter_nmc, fc = sess.filter_cust;
     document.getElementById('filter-report-nmc').innerHTML =
-      `<strong>NMC data:</strong> &nbsp;${fn.total_points} points → <span>${fn.retained_points} retained</span>` +
-      ` &nbsp;(removed: ${fn.removed_points}, retention: ${fn.retention_percentage}%)`;
+      `<strong>NMC data:</strong> &nbsp;${fn.total_points} points → <span>${fn.retained_points} retained</span> &nbsp;(removed: ${fn.removed_points}, retention: ${fn.retention_percentage}%)`;
     document.getElementById('filter-report-cust').innerHTML =
-      `<strong style="color:var(--teal)">Customer data:</strong> &nbsp;${fc.total_points} points → <span style="color:var(--teal)">${fc.retained_points} retained</span>` +
-      ` &nbsp;(removed: ${fc.removed_points}, retention: ${fc.retention_percentage}%)`;
+      `<strong style="color:var(--teal)">Customer data:</strong> &nbsp;${fc.total_points} points → <span style="color:var(--teal)">${fc.retained_points} retained</span> &nbsp;(removed: ${fc.removed_points}, retention: ${fc.retention_percentage}%)`;
   } else {
     document.getElementById('filter-panel').style.display = 'none';
   }
 
-  document.getElementById('chart-sub').textContent =
-    `Mode: ${s.mode} · Sigma clip: ${s.sigma_filter ? '2σ ON' : 'OFF'} · ${s.n_epochs} matched epochs`;
-
+  document.getElementById('chart-sub').textContent = `Mode: ${s.mode} · Sigma clip: ${s.sigma_filter ? '2σ ON' : 'OFF'} · ${s.n_epochs} matched epochs`;
   drawMainChart(sess.epochs);
   buildEpochTable(sess.epochs);
   switchInner('results');
@@ -817,10 +628,8 @@ function applyMjdFilter() {
   mjdFrom = parseInt(document.getElementById('mjd-from').value) || s.mjd_start;
   mjdTo   = parseInt(document.getElementById('mjd-to').value)   || s.mjd_end;
   const filtered = sess.epochs.filter(e => e.MJD >= mjdFrom && e.MJD <= mjdTo);
-  const dispEpochs = filtered.length;
-  const dispDays   = new Set(filtered.map(e => e.MJD)).size;
-  document.getElementById('trb-mjd').textContent = `${mjdFrom} – ${mjdTo}`;
-  document.getElementById('trb-epochs').textContent = `${dispEpochs} / ${dispDays}`;
+  document.getElementById('trb-mjd').textContent    = `${mjdFrom} – ${mjdTo}`;
+  document.getElementById('trb-epochs').textContent = `${filtered.length} / ${new Set(filtered.map(e=>e.MJD)).size}`;
   drawMainChart(filtered);
   buildEpochTable(filtered);
 }
@@ -829,90 +638,77 @@ function resetMjdFilter() {
   const sess = getSession(); if (!sess) return;
   const s = sess.summary;
   mjdFrom = s.mjd_start; mjdTo = s.mjd_end;
-  document.getElementById('mjd-from').value = s.mjd_start;
-  document.getElementById('mjd-to').value   = s.mjd_end;
-  document.getElementById('trb-mjd').textContent = `${s.mjd_start} – ${s.mjd_end}`;
-  document.getElementById('trb-epochs').textContent = `${s.n_epochs} / ${s.n_days}`;
+  document.getElementById('mjd-from').value          = s.mjd_start;
+  document.getElementById('mjd-to').value            = s.mjd_end;
+  document.getElementById('trb-mjd').textContent     = `${s.mjd_start} – ${s.mjd_end}`;
+  document.getElementById('trb-epochs').textContent  = `${s.n_epochs} / ${s.n_days}`;
   drawMainChart(sess.epochs);
   buildEpochTable(sess.epochs);
 }
 
-const errorBarPlugin = {
-  id: 'errorBars',
-  afterDatasetDraw(chart, args) {
-    if (args.index !== 0) return;
-    const meta = chart.getDatasetMeta(0);
-    if (!meta || !chart._ebActive) return;
-    const ctx = chart.ctx;
-    const ebVal = chart._ebValue || 15;
-    ctx.save();
-    ctx.strokeStyle = 'rgba(230,81,0,0.7)';
-    ctx.lineWidth = 1.5;
-    meta.data.forEach((point, i) => {
-      const yTop = chart.scales.y.getPixelForValue(chart.data.datasets[0].data[i] + ebVal);
-      const yBot = chart.scales.y.getPixelForValue(chart.data.datasets[0].data[i] - ebVal);
-      const x = point.x;
-      ctx.beginPath(); ctx.moveTo(x, yTop); ctx.lineTo(x, yBot); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(x - 4, yTop); ctx.lineTo(x + 4, yTop); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(x - 4, yBot); ctx.lineTo(x + 4, yBot); ctx.stroke();
-    });
-    ctx.restore();
+function getDisplayEpochs(epochs) {
+  if (!document.getElementById('dayavg-on').checked) return epochs;
+  const byMjd = {};
+  for (const e of epochs) {
+    if (!byMjd[e.MJD]) byMjd[e.MJD] = { MJD: e.MJD, DATE: e.DATE, NMC_sum: 0, CUST_sum: 0, DIFF_sum: 0, SAT_sum: 0, n: 0 };
+    byMjd[e.MJD].NMC_sum  += e.NMC_ns;
+    byMjd[e.MJD].CUST_sum += e.CUST_ns;
+    byMjd[e.MJD].DIFF_sum += e.DIFF_ns;
+    byMjd[e.MJD].SAT_sum  += e.N_SATS;
+    byMjd[e.MJD].n++;
   }
-};
-Chart.register(errorBarPlugin);
+  return Object.values(byMjd).sort((a,b) => a.MJD - b.MJD).map(d => ({
+    MJD: d.MJD, DATE: d.DATE,
+    EPOCH: `avg of ${d.n} epochs`,
+    NMC_ns:  d.NMC_sum  / d.n,
+    CUST_ns: d.CUST_sum / d.n,
+    DIFF_ns: d.DIFF_sum / d.n,
+    N_SATS:  Math.round(d.SAT_sum / d.n),
+  }));
+}
 
 function drawMainChart(epochs) {
-  const useEB  = document.getElementById('errbar-on').checked;
-  const multiMjd = new Set(epochs.map(e => e.MJD)).size > 1;
-  let labels;
-  if (xMode === 'hms') {
-    labels = epochs.map(e => e.EPOCH);
-  } else {
-    if (multiMjd) {
-      labels = epochs.map(e => String(e.MJD));
-    } else {
-      labels = epochs.map(e => e.EPOCH);
-    }
-  }
-  const diffs = epochs.map(e => e.DIFF_ns);
+  const display   = getDisplayEpochs(epochs);
+  const dayAvgOn  = document.getElementById('dayavg-on').checked;
+  const multiMjd  = new Set(display.map(e => e.MJD)).size > 1;
 
-  const datasets = [{
-    label: 'Δ UTC(Lab) − UTC(NMC) [ns]',
-    data: diffs,
-    borderColor: '#1565c0',
-    backgroundColor: 'rgba(21,101,192,0.07)',
-    borderWidth: 1.8,
-    pointRadius: 1.5,
-    pointHoverRadius: 5,
-    tension: 0.2,
-    fill: true,
-  }];
+  let labels;
+  if (dayAvgOn || (xMode === 'mjd' && multiMjd)) {
+    labels = display.map(e => String(e.MJD));
+  } else {
+    labels = display.map(e => e.EPOCH);
+  }
 
   if (charts.main) charts.main.destroy();
   const ctx = document.getElementById('mainChart').getContext('2d');
   charts.main = new Chart(ctx, {
     type: 'line',
-    data: { labels, datasets },
+    data: {
+      labels,
+      datasets: [{
+        label: dayAvgOn ? 'Daily Average Δ UTC(Lab) − UTC(NMC) [ns]' : 'Δ UTC(Lab) − UTC(NMC) [ns]',
+        data: display.map(e => e.DIFF_ns),
+        borderColor: dayAvgOn ? '#00838f' : '#1565c0',
+        backgroundColor: dayAvgOn ? 'rgba(0,131,143,0.09)' : 'rgba(21,101,192,0.07)',
+        borderWidth: dayAvgOn ? 2.2 : 1.8,
+        pointRadius: dayAvgOn ? 5 : 1.5,
+        pointHoverRadius: 7,
+        tension: 0.2,
+        fill: true,
+      }]
+    },
     options: {
       responsive: true, maintainAspectRatio: false, animation: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: { display: true, position: 'top', labels: { font: { family: 'Nunito', size: 11 }, color: '#546e7a', boxWidth: 18, padding: 14 } },
-        tooltip: {
-          backgroundColor: '#fff', titleColor: '#1a3a6b', bodyColor: '#546e7a',
-          borderColor: '#cfd8dc', borderWidth: 1,
-          callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(3)} ns` }
-        }
+        tooltip: { backgroundColor: '#fff', titleColor: '#1a3a6b', bodyColor: '#546e7a', borderColor: '#cfd8dc', borderWidth: 1,
+          callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(3)} ns` } }
       },
       scales: {
         x: {
-          ticks: {
-            color: '#78909c', font: { size: 10 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 18,
-          },
-          title: {
-            display: multiMjd && xMode !== 'hms',
-            text: 'MJD', color: '#1a3a6b', font: { size: 11, weight: '700' }
-          },
+          ticks: { color: '#78909c', font: { size: 10 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 18 },
+          title: { display: dayAvgOn || (xMode !== 'hms' && multiMjd), text: dayAvgOn ? 'MJD (daily average)' : 'MJD', color: '#1a3a6b', font: { size: 11, weight: '700' } },
           grid: { color: '#eceff1' }
         },
         y: {
@@ -923,26 +719,25 @@ function drawMainChart(epochs) {
       }
     }
   });
-  charts.main._ebActive = useEB;
-  charts.main._ebValue  = 15;
-  if (useEB) charts.main.update();
 }
 
 function redrawChart() {
   const sess = getSession();
   if (!sess || !sess.epochs.length) return;
   let epochs = sess.epochs;
-  if (mjdFrom !== null && mjdTo !== null) {
-    epochs = epochs.filter(e => e.MJD >= mjdFrom && e.MJD <= mjdTo);
-  }
+  if (mjdFrom !== null && mjdTo !== null) epochs = epochs.filter(e => e.MJD >= mjdFrom && e.MJD <= mjdTo);
   drawMainChart(epochs);
+  buildEpochTable(epochs);
 }
 
 function buildEpochTable(epochs) {
-  document.getElementById('ep-count').textContent =
-    `Showing ${Math.min(epochs.length, 300)} of ${epochs.length} epochs`;
+  const display   = getDisplayEpochs(epochs);
+  const dayAvgOn  = document.getElementById('dayavg-on').checked;
+  document.getElementById('ep-count').textContent = dayAvgOn
+    ? `Showing ${display.length} daily averages (from ${epochs.length} epochs)`
+    : `Showing ${Math.min(display.length, 300)} of ${display.length} epochs`;
   const body = document.getElementById('ep-body'); body.innerHTML = '';
-  for (const r of epochs.slice(0, 300)) {
+  for (const r of display.slice(0, 300)) {
     const tr = document.createElement('tr');
     tr.innerHTML =
       `<td>${r.MJD}</td><td>${r.DATE}</td><td>${r.EPOCH}</td>` +
@@ -955,9 +750,11 @@ function buildEpochTable(epochs) {
 
 async function computeMDEV() {
   const sess = getSession();
-  if (!sess || !sess.epochs.length) { toast('Run calibration first.', 'err'); return; }
+  if (!sess || !sess.result || !sess.epochs.length) { toast('Run calibration first.', 'err'); return; }
   const epoch_sec = parseFloat(document.getElementById('md-epoch').value) || 780;
   const diff_ns   = sess.epochs.map(e => e.DIFF_ns);
+  const btn = document.getElementById('mdev-run-btn');
+  btn.disabled = true; btn.textContent = 'Computing…';
   try {
     const resp = await fetch(API_BASE + '/api/mdev', {
       method: 'POST',
@@ -965,36 +762,37 @@ async function computeMDEV() {
       body: JSON.stringify({ diff_ns, epoch_sec }),
     });
     const data = await resp.json();
-    if (!resp.ok || data.error) { toast(data.error || 'MDEV error', 'err'); return; }
+    if (!resp.ok || data.error) { toast(data.error || 'MDEV error', 'err'); btn.disabled=false; btn.textContent='Compute MDEV'; return; }
     sess.mdev = data;
-    showMdev(sess);
-    switchInner('mdev');
+    document.getElementById('m-nocal').style.display = 'none';
+    document.getElementById('m-content').style.display = 'block';
+    renderMdevResults(data);
     toast('MDEV computed.', 'ok');
   } catch(e) {
     toast('MDEV error: ' + e.message, 'err');
   }
+  btn.disabled = false; btn.textContent = 'Compute MDEV';
 }
 
-function showMdev(sess) {
-  document.getElementById('m-empty').style.display  = 'none';
-  document.getElementById('m-content').style.display = 'block';
-  if (!sess.mdev) return;
-  const { tau, mdev, method, summary } = sess.mdev;
+function closestMdevPoint(tau, mdev, targetTau) {
+  let bestIdx = 0, bestDist = Infinity;
+  tau.forEach((t, i) => { const d = Math.abs(Math.log10(t) - Math.log10(targetTau)); if (d < bestDist) { bestDist = d; bestIdx = i; } });
+  return { tau: tau[bestIdx], mdev: mdev[bestIdx] };
+}
 
-  document.getElementById('mdev-result-panel').style.display = 'block';
+function renderMdevResults(data) {
+  const { tau, mdev, method } = data;
   document.getElementById('mdev-method').textContent = `Computed via: ${method}`;
 
-  const TARGET_TAUS = [1e3, 1e4, 1e5];
-  function closestMdev(targetTau) {
-    let bestIdx = 0, bestDist = Infinity;
-    tau.forEach((t, i) => { const d = Math.abs(Math.log10(t) - Math.log10(targetTau)); if (d < bestDist) { bestDist = d; bestIdx = i; } });
-    return { tau: tau[bestIdx], mdev: mdev[bestIdx] };
-  }
-  const fixedPoints = TARGET_TAUS.map(t => closestMdev(t));
-  const avgMdev = fixedPoints.reduce((s, p) => s + p.mdev, 0) / fixedPoints.length;
+  // Three equally-spaced log ticks: 10^3, 10^4, 10^5
+  const TICK_TAUS = [1e3, 1e4, 1e5];
+  const tickPoints = TICK_TAUS.map(t => closestMdevPoint(tau, mdev, t));
 
-  document.getElementById('mdev-avg-row').style.display = 'block';
-  document.getElementById('mdev-avg-val').textContent = avgMdev.toExponential(3) + ' s';
+  // Final result cards
+  const resultPoints = [960, 86400, 864000].map(t => closestMdevPoint(tau, mdev, t));
+  document.getElementById('mfc-val-1').textContent = resultPoints[0].mdev.toExponential(3) + ' s';
+  document.getElementById('mfc-val-2').textContent = resultPoints[1].mdev.toExponential(3) + ' s';
+  document.getElementById('mfc-val-3').textContent = resultPoints[2].mdev.toExponential(3) + ' s';
 
   if (charts.mdev) charts.mdev.destroy();
   const ctx = document.getElementById('mdevChart').getContext('2d');
@@ -1005,24 +803,14 @@ function showMdev(sess) {
         {
           label: 'MDEV (all τ)',
           data: tau.map((t, i) => ({ x: t, y: mdev[i] })),
-          borderColor: '#9c27b0',
-          backgroundColor: 'rgba(106,27,154,0.06)',
-          borderWidth: 1.5,
-          pointRadius: 0,
-          fill: true,
-          tension: 0.1,
-          order: 2,
+          borderColor: '#9c27b0', backgroundColor: 'rgba(106,27,154,0.06)',
+          borderWidth: 1.5, pointRadius: 0, fill: true, tension: 0.1, order: 2,
         },
         {
           label: 'MDEV at τ = 10³, 10⁴, 10⁵ s',
-          data: fixedPoints.map(p => ({ x: p.tau, y: p.mdev })),
-          borderColor: '#6a1b9a',
-          backgroundColor: '#6a1b9a',
-          borderWidth: 0,
-          pointRadius: 7,
-          pointStyle: 'circle',
-          showLine: false,
-          order: 1,
+          data: tickPoints.map(p => ({ x: p.tau, y: p.mdev })),
+          borderColor: '#6a1b9a', backgroundColor: '#6a1b9a',
+          borderWidth: 0, pointRadius: 7, pointStyle: 'circle', showLine: false, order: 1,
         }
       ]
     },
@@ -1031,10 +819,9 @@ function showMdev(sess) {
       plugins: {
         legend: { display: true, position: 'top', labels: { font: { family: 'Nunito', size: 11 }, color: '#546e7a', boxWidth: 14, padding: 12 } },
         tooltip: {
-          backgroundColor: '#fff', titleColor: '#1a3a6b', bodyColor: '#546e7a',
-          borderColor: '#cfd8dc', borderWidth: 1,
+          backgroundColor: '#fff', titleColor: '#1a3a6b', bodyColor: '#546e7a', borderColor: '#cfd8dc', borderWidth: 1,
           callbacks: {
-            title: items => `τ = ${Number(items[0].parsed.x).toExponential(1)} s`,
+            title: items => `τ = ${Number(items[0].parsed.x).toExponential(2)} s`,
             label: item  => `MDEV = ${item.parsed.y.toExponential(3)} s`,
           }
         }
@@ -1042,26 +829,23 @@ function showMdev(sess) {
       scales: {
         x: {
           type: 'logarithmic',
-          min: 9e2, max: 1.2e5,
           title: { display: true, text: 'Averaging Time, τ (s)', color: '#1a3a6b', font: { size: 12, weight: '700', family: 'Nunito' } },
           ticks: {
-            color: '#78909c', font: { size: 11 },
+            color: '#78909c', font: { size: 12 },
             callback: (val) => {
-              const candidates = [1e3, 1e4, 1e5];
-              if (candidates.some(c => Math.abs(val - c) / c < 0.01))
-                return val.toExponential(0);
+              if (Math.abs(val - 1e3) / 1e3 < 0.02) return '10³';
+              if (Math.abs(val - 1e4) / 1e4 < 0.02) return '10⁴';
+              if (Math.abs(val - 1e5) / 1e5 < 0.02) return '10⁵';
               return null;
             }
           },
+          afterBuildTicks: axis => { axis.ticks = [{ value: 1e3 }, { value: 1e4 }, { value: 1e5 }]; },
           grid: { color: '#eceff1' }
         },
         y: {
           type: 'logarithmic',
           title: { display: true, text: 'MDEV (s)', color: '#6a1b9a', font: { size: 12, weight: '700', family: 'Nunito' } },
-          ticks: {
-            color: '#78909c', font: { size: 10 },
-            callback: val => val.toExponential(1)
-          },
+          ticks: { color: '#78909c', font: { size: 10 }, callback: val => val.toExponential(1) },
           grid: { color: '#eceff1' }
         }
       }
@@ -1069,9 +853,9 @@ function showMdev(sess) {
   });
 
   let html = `<table style="margin-top:14px"><thead><tr><th>τ (s)</th><th>MDEV (s)</th><th>Stability Label</th></tr></thead><tbody>`;
-  fixedPoints.forEach(p => {
-    let label = p.tau < 3600 ? 'sub-hour' : p.tau < 86400 ? 'sub-day' : 'multi-day';
-    html += `<tr><td>${Number(p.tau).toExponential(0)}</td><td>${Number(p.mdev).toExponential(3)}</td><td>${label}</td></tr>`;
+  tickPoints.forEach(p => {
+    const lbl = p.tau < 3600 ? 'sub-hour' : p.tau < 86400 ? 'sub-day' : 'multi-day';
+    html += `<tr><td>${Number(p.tau).toExponential(0)}</td><td>${Number(p.mdev).toExponential(3)}</td><td>${lbl}</td></tr>`;
   });
   html += '</tbody></table>';
   document.getElementById('mdev-summary').innerHTML = html;
@@ -1081,25 +865,22 @@ function exportCSV() {
   const sess = getSession();
   if (!sess || !sess.epochs.length) { toast('No calibration data to export.', 'warn'); return; }
   let epochs = sess.epochs;
-  if (mjdFrom !== null && mjdTo !== null) {
-    epochs = epochs.filter(e => e.MJD >= mjdFrom && e.MJD <= mjdTo);
-  }
-  const hdr = 'MJD,DATE,EPOCH,NMC_REFSYS_ns,CUST_REFSYS_ns,DIFF_ns,N_SATS\n';
-  const rows = epochs.map(e =>
-    `${e.MJD},${e.DATE},${e.EPOCH},${e.NMC_ns.toFixed(3)},${e.CUST_ns.toFixed(3)},${e.DIFF_ns.toFixed(3)},${e.N_SATS}`
-  ).join('\n');
+  if (mjdFrom !== null && mjdTo !== null) epochs = epochs.filter(e => e.MJD >= mjdFrom && e.MJD <= mjdTo);
+  const display = getDisplayEpochs(epochs);
+  const hdr  = 'MJD,DATE,EPOCH,NMC_REFSYS_ns,CUST_REFSYS_ns,DIFF_ns,N_SATS\n';
+  const rows = display.map(e => `${e.MJD},${e.DATE},${e.EPOCH},${e.NMC_ns.toFixed(3)},${e.CUST_ns.toFixed(3)},${e.DIFF_ns.toFixed(3)},${e.N_SATS}`).join('\n');
   downloadBlob(hdr + rows, `NMC_RemCal_${sess.label.replace(/[^a-z0-9]/gi,'_')}.csv`, 'text/csv');
   toast('CSV exported.', 'ok');
 }
 
 function exportChart() {
   const onMdev = innerTab === 'mdev';
-  const chart = onMdev ? charts.mdev : charts.main;
+  const chart  = onMdev ? charts.mdev : charts.main;
   if (!chart) { toast('No chart to export. Run calibration first.', 'warn'); return; }
-  const a = document.createElement('a');
-  a.href = chart.toBase64Image('image/png', 1);
   const sess = getSession();
   const label = sess ? sess.label.replace(/[^a-z0-9]/gi,'_') : 'chart';
+  const a = document.createElement('a');
+  a.href = chart.toBase64Image('image/png', 1);
   a.download = `NMC_RemCal_${onMdev ? 'MDEV_' : 'TimeDiff_'}${label}.png`;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   toast('Chart exported as PNG.', 'ok');
@@ -1110,15 +891,11 @@ function downloadBlob(content, filename, mime) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(a.href);
 }
 
-function setProg(pct) {
-  document.getElementById('prog').style.width = pct + '%';
-}
+function setProg(pct) { document.getElementById('prog').style.width = pct + '%'; }
 
 let _notifTimer;
 function toast(msg, type='ok') {
