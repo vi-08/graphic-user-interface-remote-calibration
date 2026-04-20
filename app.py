@@ -1,12 +1,11 @@
 """
-NMC Remote Calibration System — Flask Backend
-National Metrology Centre, Singapore
+Remote Calibration GUI (Backend)
 
-Endpoints:
+Objectives:
   POST /api/calibrate   — parse CGGTTS/CSV files, compute time differences
   POST /api/mdev        — compute Modified Allan Deviation
 
-CGGTTS column layout (fixed-width, ITU-R TF.1153):
+CGGTTS file format:
   V2E: PRN  CL  MJD  STTIME  TRKL  ELV  AZTH  REFSV  SRSV  REFSYS  SRSYS  DSG  IOE  MDTR  SMDT  MDIO  SMDI  MSIO  SMSI  ISG  FR  HC  FRC  CK
   V1E: PRN  CL  MJD  STTIME  REFSV  SRSV  REFSYS  SRSYS  DSG  IOE  MDTR  SMDT  MDIO  SMDI  CK
   Each REFSYS value is in units of 0.1 ns  →  divide by 10 to get ns.
@@ -32,7 +31,6 @@ app = Flask(__name__)
 CORS(app)
 
 class _NumpyEncoder(json.JSONEncoder):
-    """Make numpy scalars and arrays JSON-serializable."""
     def default(self, obj):
         if isinstance(obj, np.integer):
             return int(obj)
@@ -44,14 +42,11 @@ class _NumpyEncoder(json.JSONEncoder):
 
 app.json_encoder = _NumpyEncoder
 
-# ──────────────────────────────────────────────────────────────────────────────
-# MJD helpers
-# ──────────────────────────────────────────────────────────────────────────────
+# > MJD Converter 
 
 def mjd_to_date(mjd: float) -> str:
     """Convert MJD (float) to DD-MM-YYYY string."""
     jd = mjd + 2400000.5
-    # Algorithm from Jean Meeus, Astronomical Algorithms
     jd = jd + 0.5
     Z = int(jd)
     F = jd - Z
@@ -76,15 +71,11 @@ def sttime_to_hms(sttime_s: int) -> str:
     s = sttime_s % 60
     return f"{h:02d}:{m:02d}:{s:02d}"
 
+#CGGTTS File Parser
 
-# ──────────────────────────────────────────────────────────────────────────────
-# CGGTTS parser
-# ──────────────────────────────────────────────────────────────────────────────
-
-# Constellation character → name
 CONST_CHAR = {'G': 'GPS', 'E': 'Galileo', 'R': 'GLONASS', 'C': 'BeiDou', 'J': 'QZSS'}
 
-# Column indices for each format variant, keyed by (version, n_tokens).
+# Column indices for each format:
 # V2E full row: PRN CL MJD STTIME TRKL ELV AZTH REFSV SRSV REFSYS SRSYS DSG IOE MDTR SMDT MDIO SMDI MSIO SMSI ISG FR HC FRC CK
 #  index:        0   1  2    3     4    5    6    7     8     9     10    11  12   13   14   15   16   17   18  19  20 21  22  23
 # V1E row:      PRN CL MJD STTIME REFSV SRSV REFSYS SRSYS DSG IOE MDTR SMDT MDIO SMDI CK
@@ -95,25 +86,19 @@ _V1E_IDX = {'mjd': 2, 'sttime': 3, 'elv': None, 'refsys': 6, 'min_tokens': 7}
 
 
 def _detect_version(lines: list[str]) -> str:
-    """
-    Return '2E' or '1E' by inspecting header lines.
-    A v2E file has 'GENERIC DATA FORMAT VERSION = 2E' in its header,
-    OR a data row with 24 whitespace-separated tokens (the v2E row width).
-    """
+# Detect version 2E
     for line in lines:
         upper = line.upper()
         if 'VERSION' in upper and '2E' in upper:
             return '2E'
         if 'GENERIC DATA FORMAT' in upper and '2E' in upper:
             return '2E'
-    # Fallback: inspect first data-looking line token count
     for line in lines:
         stripped = line.strip().rstrip('\r')
         if not stripped or stripped.startswith('#'):
             continue
         tokens = stripped.split()
         if len(tokens) >= 1 and re.match(r'^[A-Z]\d+$', tokens[0]):
-            # A data line — count tokens to distinguish format
             if len(tokens) >= 20:
                 return '2E'
             else:
@@ -123,34 +108,31 @@ def _detect_version(lines: list[str]) -> str:
 
 def _find_data_start(lines: list[str]) -> int:
     """
-    Locate the index of the first actual data line in the file.
+    locating the index of the first data line in the file.
 
-    CGGTTS v2E files have this structure:
-        ... header key=value lines ...
+    CGGTTS v2E files have this format:
+        ... header lines ...
         CKSUM = xx
         <blank line>
         SAT CL  MJD  STTIME TRKL ELV AZTH ...   ← column header
                      hhmmss  s  .1dg ...          ← unit row
-        C01 FF 60919 001400 ...                   ← first data line  ← we want this
+        C01 FF 60919 001400 ...                   ← first data line 
 
-    v1E files are similar but may have a different column header line.
-
-    Strategy: find the line that starts with "SAT" and contains "MJD",
-    then skip any immediately following non-data lines (unit rows, blank lines).
+    --> find the line that starts with "SAT" and contains "MJD",
+    --> skip any immediately following non-data lines (unit rows, blank lines).
     """
     for i, line in enumerate(lines):
         stripped = line.strip().rstrip('\r')
         if stripped.upper().startswith('SAT') and 'MJD' in stripped.upper():
-            # Found column header — skip unit/continuation rows after it
+            # found column header — skip unit/continuation rows after it
             j = i + 1
             while j < len(lines):
                 candidate = lines[j].strip().rstrip('\r')
-                # A real data line starts with a PRN token like G01, C14, E05, R07 …
+                # a data line starts with a PRN code (e.g. G01)
                 if re.match(r'^[A-Z]\d+\s', candidate):
                     return j
                 j += 1
-            return i + 1  # fallback: line right after SAT header
-    # Last-resort: find first line matching a PRN pattern
+            return i + 1  # line right after SAT header
     for i, line in enumerate(lines):
         if re.match(r'^\s*[A-Z]\d+\s', line):
             return i
@@ -162,14 +144,13 @@ def parse_cggtts(content: str, allowed_constellations: list[str]) -> pd.DataFram
     Parse a CGGTTS file (version 1E or 2E) and return a DataFrame with columns:
         PRN, CONST, MJD, STTIME, REFSYS_ns, ELV
 
-    Handles:
-      - CRLF and LF line endings
+   Objectives:
       - Multiple day-blocks concatenated in one file (each with its own header)
       - V2E 24-token rows (REFSYS at index 9)
       - V1E shorter rows (REFSYS at index 6)
       - REFSYS converted from 0.1 ns units → ns (divide by 10)
     """
-    # Normalise line endings
+    # normalise line endings
     content = content.replace('\r\n', '\n').replace('\r', '\n')
     lines = content.splitlines()
 
@@ -178,30 +159,28 @@ def parse_cggtts(content: str, allowed_constellations: list[str]) -> pd.DataFram
 
     records = []
 
-    # We iterate the whole file; when we hit a new SAT header, we recalculate
-    # the data start (handles multi-day concatenated files).
     in_data = False
     for raw in lines:
         line = raw.strip()
 
-        # Detect start/restart of a data block (new header or new day block)
+        # detect start/restart of a data block (new header or new day block)
         if line.upper().startswith('SAT') and 'MJD' in line.upper():
             in_data = True
             continue
 
-        # Skip unit rows, blank lines, comments, and non-data header lines
+        # skip unit rows, blank lines, comments, and non-data header lines
         if not in_data:
             continue
         if not line or line.startswith('#'):
             continue
-        # Unit continuation row (starts with 'hhmmss' or all non-alphanumeric)
+        # unit continuation row (starts with 'hhmmss' or all non-alphanumeric)
         if line.lower().startswith('hhmmss') or line.startswith('.'):
             continue
-        # New file header block embedded in concatenated file
+        # new file header block embedded in concatenated file
         if line.upper().startswith('CGGTTS'):
             in_data = False
             continue
-        # Skip key=value header lines that may appear between blocks
+        # skip header lines that may appear between blocks
         if '=' in line and not re.match(r'^[A-Z]\d+\s', line):
             continue
 
@@ -211,7 +190,7 @@ def parse_cggtts(content: str, allowed_constellations: list[str]) -> pd.DataFram
 
         try:
             prn_field = tokens[0]
-            # PRN must match pattern like G01, C14, E05, R07
+            # PRN must match pattern like G01, E14,etc
             if not re.match(r'^[A-Z]\d+$', prn_field):
                 continue
 
@@ -229,7 +208,7 @@ def parse_cggtts(content: str, allowed_constellations: list[str]) -> pd.DataFram
             ss = sttime_hhmmss % 100
             sttime = hh * 3600 + mm * 60 + ss   # convert to seconds-of-day
 
-            # Elevation
+            # elevation
             if idx['elv'] is not None and len(tokens) > idx['elv']:
                 elv_raw = int(tokens[idx['elv']])
                 elv_deg = elv_raw / 10.0
@@ -241,7 +220,7 @@ def parse_cggtts(content: str, allowed_constellations: list[str]) -> pd.DataFram
 
             refsys_raw = int(tokens[idx['refsys']])
 
-            # Reject sentinel / invalid values (9999999 is the standard CGGTTS bad-value flag)
+            # reject invalid values
             if refsys_raw == 9999999 or abs(refsys_raw) > 9_000_000:
                 continue
 
@@ -276,7 +255,7 @@ def parse_csv_refsys(content: str) -> pd.DataFrame:
 
     df.columns = [c.strip().upper() for c in df.columns]
 
-    # Flexible column mapping
+    # column mapping
     col_map = {}
     for col in df.columns:
         if col in ('MJD',):
@@ -303,9 +282,7 @@ def parse_csv_refsys(content: str) -> pd.DataFrame:
     return out
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# 2-sigma clipping
-# ──────────────────────────────────────────────────────────────────────────────
+# applying optional filter: 2-sigma clipping
 
 def sigma_clip(series: pd.Series, sigma: float = 2.0) -> tuple[pd.Series, dict]:
     """Apply iterative 2σ clipping. Returns (mask_keep, report_dict)."""
@@ -333,9 +310,7 @@ def sigma_clip(series: pd.Series, sigma: float = 2.0) -> tuple[pd.Series, dict]:
     return mask, report
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Core calibration engine
-# ──────────────────────────────────────────────────────────────────────────────
+#calibration
 
 def _epoch_key(mjd: int, sttime: int) -> tuple[int, int]:
     return (mjd, sttime)
@@ -400,7 +375,7 @@ def run_cv(nmc_df: pd.DataFrame, cust_df: pd.DataFrame,
     Common View: for each (MJD, STTIME, PRN) triplet visible in BOTH labs,
     compute per-satellite difference, then average over common satellites per epoch.
     """
-    # Merge on MJD + STTIME + PRN
+    # merge on MJD + STTIME + PRN
     merged = pd.merge(
         nmc_df[['MJD', 'STTIME', 'PRN', 'REFSYS_ns']].rename(columns={'REFSYS_ns': 'NMC_ns'}),
         cust_df[['MJD', 'STTIME', 'PRN', 'REFSYS_ns']].rename(columns={'REFSYS_ns': 'CUST_ns'}),
@@ -466,9 +441,7 @@ def build_summary(epochs: list[dict], mode: str, sigma_filter: bool) -> dict:
     }
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Flask routes
-# ──────────────────────────────────────────────────────────────────────────────
+# flask routes
 
 @app.route('/api/calibrate', methods=['POST'])
 def calibrate():
@@ -550,12 +523,12 @@ def mdev_endpoint():
         if len(diff_ns) < 4:
             return jsonify({'error': 'Need at least 4 epochs to compute MDEV.'}), 400
 
-        # Convert ns → s for frequency deviation (phase data)
+        # convert ns → s for frequency deviation (phase data)
         phase_s = np.array(diff_ns, dtype=float) * 1e-9
 
         if HAS_ALLANTOOLS:
             try:
-                # Always compute at decade taus plus explicitly at 1e3, 1e4, 1e5
+                # always compute at decade taus plus explicitly at 1e3, 1e4, 1e5
                 tau_targets = np.unique(np.concatenate([
                     np.array([1e3, 1e4, 1e5]),
                     np.logspace(np.log10(epoch_sec), np.log10(len(phase_s) * epoch_sec / 3), 30)
@@ -575,7 +548,7 @@ def mdev_endpoint():
             tau_out, mdev_out = _manual_mdev(phase_s, epoch_sec)
             method = 'manual MDEV (allantools not installed)'
 
-        # Filter valid values
+        # filter valid values
         valid = [(t, m) for t, m in zip(tau_out, mdev_out)
                  if np.isfinite(t) and np.isfinite(m) and m > 0]
         if not valid:
@@ -583,7 +556,7 @@ def mdev_endpoint():
 
         taus, mdevs = zip(*valid)
 
-        # Build summary table at decade points
+        # build summary table at decade points
         summary_rows = []
         for t, m in zip(taus, mdevs):
             if t >= 900:
@@ -633,10 +606,7 @@ def _manual_mdev(phase_s: np.ndarray, tau0: float) -> tuple[np.ndarray, np.ndarr
 
     return np.array(taus), np.array(mdevs)
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Static file serving (serve the HTML from same directory)
-# ──────────────────────────────────────────────────────────────────────────────
+# serves HTML in same directory
 
 from flask import send_from_directory
 
